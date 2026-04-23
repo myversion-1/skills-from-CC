@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-cd /d D:\skills
+cd /d D:\Personal\skills
 python sync_skills.py --check-only
 if %errorlevel% neq 0 (
     echo.

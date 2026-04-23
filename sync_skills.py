@@ -27,7 +27,7 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
 # 配置
-REPO_PATH = Path("D:/skills")
+REPO_PATH = Path("D:/Personal/skills")
 UPSTREAM_REPO = "anthropics/skills"
 UPSTREAM_URL = f"https://github.com/{UPSTREAM_REPO}"
 LOG_FILE = REPO_PATH / ".sync_log.json"
@@ -134,11 +134,12 @@ def sync(check_only: bool = False, force: bool = False) -> bool:
 
     # 2. Merge upstream/main
     print("🔀 Merging upstream/main...")
-    returncode, stdout, stderr = run_git(["merge", "upstream/main", "--ff-only"])
+    returncode, stdout, stderr = run_git(["merge", "upstream/main", "-m", "Sync from upstream"])
     if returncode != 0:
         print(f"❌ Merge 失败: {stderr}")
-        print("💡 尝试硬重置...")
-        run_git(["reset", "--hard", "upstream/main"])
+        print("💡 尝试中止合并...")
+        run_git(["merge", "--abort"])
+        return False
 
     # 3. Push to origin
     print("📤 Pushing to origin...")
